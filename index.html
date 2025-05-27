@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>In Loving Memory</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Georgia", serif;
+        background: #000;
+        color: #333;
+        overflow-x: hidden;
+      }
+
+      .card {
+        max-width: 700px;
+        width: 90%;
+        margin: 50px auto;
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 12px;
+        padding: 24px 24px 70px;
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .space-animation {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        overflow: hidden;
+      }
+
+      .star,
+      .planet {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.8;
+        animation: float 20s infinite linear;
+      }
+
+      .star {
+        width: 8px;
+        height: 8px;
+        background: radial-gradient(circle, #fff, #f0f0f0);
+        animation-duration: 15s;
+      }
+
+      .planet {
+        background: radial-gradient(circle, #ff8c00, #ff5722, #d84315);
+        width: 40px;
+        height: 40px;
+        animation: orbit 25s infinite linear;
+      }
+
+      .planet:nth-child(2) {
+        background: radial-gradient(circle, #42a5f5, #1e88e5, #0d47a1);
+        width: 30px;
+        height: 30px;
+        animation-duration: 30s;
+      }
+
+      .planet:nth-child(3) {
+        background: radial-gradient(circle, #ab47bc, #8e24aa, #6a1b9a);
+        width: 35px;
+        height: 35px;
+        animation-duration: 35s;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(0) translateX(0);
+        }
+        100% {
+          transform: translateY(-300px) translateX(200px);
+        }
+      }
+
+      @keyframes orbit {
+        0% {
+          transform: rotate(0deg) translateX(150px) rotate(0deg);
+        }
+        50% {
+          transform: rotate(60deg) translateX(50px) rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg) translateX(150px) rotate(-360deg);
+        }
+      }
+
+      .photo {
+        width: 160px;
+        height: 160px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 4px solid #c1a57b;
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 1;
+      }
+      .photo-container {
+        position: relative;
+        width: 170px;
+        height: 170px;
+        margin: 0 auto 20px;
+      }
+
+      .sun-glow {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 170px;
+        height: 170px;
+        background: radial-gradient(
+          circle,
+          #ffeb3b 0%,
+          #fdd835 40%,
+          transparent 70%
+        );
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        box-shadow: 0 0 40px 15px rgba(255, 193, 7, 0.5);
+        z-index: 0;
+      }
+
+      .photo {
+        position: relative;
+        z-index: 1;
+      }
+
+      h1 {
+        font-size: 28px;
+        color: #5c4d3e;
+        margin-bottom: 5px;
+        position: relative;
+        z-index: 1;
+      }
+      h3 {
+        color: #5c4d3e;
+      }
+
+      .message {
+        font-size: 18px;
+        margin-bottom: 5px;
+        line-height: 1.6;
+        position: relative;
+        z-index: 1;
+      }
+
+      .details {
+        font-size: 16px;
+        background-color: #f5f5f5;
+        padding: 8px 16px;
+        border-radius: 8px;
+        margin-top: 20px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .footer {
+        margin-top: 30px;
+        font-size: 14px;
+        color: #777;
+        position: relative;
+        z-index: 1;
+      }
+      .map-button {
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #ff9800;
+        color: #fff;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: background 0.3s ease;
+      }
+
+      .map-button:hover {
+        background-color: #f57c00;
+      }
+
+      /* Diyas */
+      .diya {
+        position: absolute;
+        bottom: 30px;
+        width: 70px;
+        height: 70px;
+        z-index: 2;
+      }
+
+      .diya.left {
+        left: 20px;
+      }
+
+      .diya.right {
+        right: 20px;
+      }
+
+      .diya .bowl {
+        width: 100%;
+        height: 35px;
+        background: radial-gradient(
+          ellipse at center,
+          #5a2d0c 0%,
+          #8b4513 100%
+        );
+        border-radius: 0 0 40px 40px;
+        position: relative;
+      }
+
+      .diya .flame {
+        position: absolute;
+        top: -30px;
+        left: 26px;
+        width: 18px;
+        height: 40px;
+        background: radial-gradient(
+          ellipse at center,
+          #ffeb3b 0%,
+          #ff9800 60%,
+          #e65100 100%
+        );
+        border-radius: 50% 50% 40% 40%;
+        animation: flicker 1.2s infinite alternate ease-in-out;
+      }
+
+      @keyframes flicker {
+        0% {
+          transform: scale(1) translateY(0);
+          opacity: 0.9;
+        }
+        100% {
+          transform: scale(1.1, 1.2) translateY(-2px);
+          opacity: 1;
+        }
+      }
+      .map-button {
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #ff9800;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: background 0.3s ease;
+      }
+
+      .map-button:hover {
+        background-color: #f57c00;
+      }
+      .calendar-button {
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        text-decoration: none;
+        display: inline-block;
+        margin-left: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: background 0.3s ease;
+      }
+
+      .calendar-button:hover {
+        background-color: #388e3c;
+      }
+      .footer-buttons {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 10px;
+      }
+
+      .map-button,
+      .calendar-button {
+        flex: 1 1 auto;
+        min-width: 140px;
+        max-width: 180px;
+        padding: 10px 16px;
+        font-size: 14px;
+      }
+
+      /* Modal Styling */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 999;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.7);
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        position: relative;
+        width: 90%;
+        max-width: 700px;
+        background: white;
+        padding: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .modal-content iframe {
+        width: 100%;
+        height: 400px;
+        border: none;
+      }
+
+      .close {
+        position: absolute;
+        top: 8px;
+        right: 14px;
+        font-size: 28px;
+        color: #333;
+        cursor: pointer;
+        z-index: 1000;
+      }
+      .calendar-button {
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-left: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: background 0.3s ease;
+      }
+
+      .calendar-button:hover {
+        background-color: #388e3c;
+      }
+
+      /* Reuse existing modal styles */
+      .calendar-modal {
+        padding: 30px;
+        text-align: center;
+      }
+
+      .calendar-options {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .calendar-option {
+        padding: 12px;
+        font-size: 18px;
+        text-decoration: none;
+        border-radius: 8px;
+        color: white;
+        display: block;
+      }
+
+      .calendar-option.google {
+        background-color: #4285f4;
+      }
+
+      .calendar-option:hover {
+        opacity: 0.9;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @media (max-width: 600px) {
+        .photo {
+          width: 160px;
+          height: 160px;
+        }
+
+        h1 {
+          font-size: 22px;
+        }
+        h3 {
+          font-size: 15px;
+        }
+        .message,
+        .details {
+          font-size: 15px;
+        }
+
+        .diya {
+          width: 50px;
+          height: 50px;
+        }
+
+        .diya .flame {
+          left: 16px;
+          width: 14px;
+          height: 30px;
+        }
+
+        .diya .bowl {
+          height: 25px;
+        }
+      }
+      @media (max-width: 920px) {
+        .card {
+          width: 100vw;
+          height: 100vh;
+          border-radius: 0;
+          margin: 0;
+          padding-bottom: 100px; /* to leave room for diyas */
+          box-sizing: border-box;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <!-- Space Animation Inside Card -->
+      <div class="space-animation">
+        <!-- Stars -->
+        <div class="star" style="top: 20px; left: 50px"></div>
+        <div class="star" style="top: 80px; left: 600px"></div>
+        <div class="star" style="top: 150px; left: 200px"></div>
+
+        <!-- Planets -->
+        <div class="planet" style="top: 40px; left: 100px"></div>
+        <div class="planet" style="top: 80px; left: 250px"></div>
+        <div class="planet" style="top: 120px; left: 400px"></div>
+        <div class="planet" style="top: 200px; left: 500px"></div>
+        <div class="planet" style="top: 300px; left: 100px"></div>
+      </div>
+
+      <div class="photo-container">
+        <div class="sun-glow"></div>
+        <img src="./sukesini_nath.png" alt="Deceased Photo" class="photo" />
+      </div>
+
+      <h1>Mrs. Sukeshini Nath</h1>
+      <h3>1<sup>st</sup> November 1954 - 25<sup>th</sup> May 2025</h3>
+
+      <div class="message">
+        With deep sorrow and heavy hearts, we inform you of the sad demise of
+        our beloved mother,<br />
+        <strong>Mrs. Sukeshini Nath</strong>.<br />
+        We cordially invite you and your family to join us to honor her memory
+        and pray for her departed soul.
+      </div>
+
+      <div class="details">
+        <strong>Schedule</strong><br />
+        Date: 5th June 2025<br />
+        Prayar & Prasad Sevan: 01:00 PM<br />
+        <strong>Venue</strong><br />
+        Community Hall, Vipul Garden,Kalinga Nagar, Bhubaneswar<br /><br />
+      </div>
+
+      <div class="footer">
+        <div>With regards – The Nath Family</div>
+        <div class="footer-buttons">
+          <button class="map-button" onclick="toggleMapModal()">
+            Show Venue Map
+          </button>
+          <button class="calendar-button" onclick="toggleCalendarModal()">
+            Add to Calendar
+          </button>
+        </div>
+      </div>
+      <!-- Modal -->
+      <div id="mapModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="toggleMapModal()">&times;</span>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3742.9143292152708!2d85.76294067523588!3d20.262387481202147!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a19a8020e39bf07%3A0x38ac17e35f899f84!2sVipul%20Gardens!5e0!3m2!1sen!2sin!4v1748345838590!5m2!1sen!2sin"
+            width="600"
+            height="450"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </div>
+      <!-- Calendar Modal -->
+      <div id="calendarModal" class="modal">
+        <div class="modal-content calendar-modal">
+          <span class="close" onclick="toggleCalendarModal()">&times;</span>
+          <h2>Add to Calendar</h2>
+          <div class="calendar-options">
+            <a class="calendar-option google" target="_blank" id="googleCal"
+              >Google Calendar</a
+            >
+          </div>
+        </div>
+      </div>
+      <!-- Earthen Lamps -->
+      <div class="diya left">
+        <div class="flame"></div>
+        <div class="bowl"></div>
+      </div>
+
+      <div class="diya right">
+        <div class="flame"></div>
+        <div class="bowl"></div>
+      </div>
+    </div>
+    <script>
+      function toggleMapModal() {
+        const modal = document.getElementById("mapModal");
+        modal.style.display = modal.style.display === "flex" ? "none" : "flex";
+      }
+
+      // Optional: close modal when clicking outside
+      window.onclick = function (event) {
+        const modal = document.getElementById("mapModal");
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      };
+      document.addEventListener("DOMContentLoaded", function () {
+        const calendarLink = document.getElementById("calendarLink");
+
+        // Format: YYYYMMDDTHHMMSSZ
+        const start = "20250605T073000Z"; // June 5, 2025 – 1:00 PM IST
+        const end = "20250605T090000Z"; // June 5, 2025 – 2:30 PM IST
+
+        const title = encodeURIComponent("Memorial Service for Beloved Mother");
+        const details = encodeURIComponent(
+          "We invite you to join us in a prayer and remembrance ceremony."
+        );
+        const location = encodeURIComponent(
+          "Community Hall, Vipul Gardens, Bhubaneswar"
+        );
+
+        const googleUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`;
+
+        calendarLink.href = googleUrl;
+      });
+      function toggleCalendarModal() {
+        const modal = document.getElementById("calendarModal");
+        modal.style.display = modal.style.display === "flex" ? "none" : "flex";
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const googleLink = document.getElementById("googleCal");
+
+        const title = encodeURIComponent(
+          "Memorial Service for Mrs. Sukeshini Nath"
+        );
+        const details = encodeURIComponent(
+          "Join us for the Shradhanjali at Community Hall, Vipul Gardens, Bhubaneswar."
+        );
+        const location = encodeURIComponent(
+          "Community Hall, Vipul Gardens, Bhubaneswar"
+        );
+        const start = "20250605T073000Z"; // Adjust UTC date/time
+        const end = "20250605T090000Z";
+
+        const gcalUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`;
+
+        googleLink.href = gcalUrl;
+      });
+
+      window.onclick = function (event) {
+        const modal = document.getElementById("calendarModal");
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      };
+    </script>
+  </body>
+</html>
